@@ -1,10 +1,28 @@
+// This function returns a URL based on the provided IMDB id
+const getMovieLink = movieID => {
+    const movieURL = `https://www.imdb.com/title/${movieID}/`;
+    return movieURL;
+}
+
 // This function creates a list element out of each movie and appends it to the list of movies
 const addMoviesToDOM = movies => {
     const moviesList = document.querySelector('#movies-list');
+
+    // First remove previous movies from the list
+    while (moviesList.firstChild) {
+        moviesList.removeChild(moviesList.firstChild);
+    };
+
+    // Then add new movies according to the relevant movie category
     movies.forEach(movie => {
-        const newMoviesListItem = document.createElement('li');
-        newMoviesListItem.innerHTML = `<img src="${movie.Poster}">`;
-        moviesList.appendChild(newMoviesListItem);
+        const moviesListItem = document.createElement('li');
+        const movieLink = getMovieLink(movie.imdbID);
+        moviesListItem.innerHTML = `
+            <a href="${movieLink}" target="_blank">
+                <img src="${movie.Poster}" class="site-main__movie-poster">
+            </a>
+        `;
+        moviesList.appendChild(moviesListItem);
     });
 };
 
@@ -14,11 +32,14 @@ const filterMovies = wordInMovieTitle => {
     addMoviesToDOM(filteredMovies);
 };
 
-// This function filters movies from 2014 and later
+// This function filters movies released in 2014 and later
 const filterLatestMovies = () => {
     const filteredMovies = movies.filter(movie => Number(movie.Year) >= 2014);
     addMoviesToDOM(filteredMovies);
 };
+
+// Display all movies upon first visit to the site
+addMoviesToDOM(movies);
 
 // Attach an event handler to all radio buttons
 const radioButtons = document.querySelectorAll('.site-nav__radio');
