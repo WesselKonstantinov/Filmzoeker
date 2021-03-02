@@ -19,7 +19,7 @@ const addMoviesToDOM = movies => {
         const movieLink = getMovieLink(movie.imdbID);
         moviesListItem.innerHTML = `
             <a href="${movieLink}" target="_blank">
-                <img src="${movie.Poster}" class="site-main__movie-poster">
+                <img src="${movie.Poster}" class="site-main__movie-poster" alt="Poster van de film ${movie.Title}">
             </a>
         `;
         moviesList.appendChild(moviesListItem);
@@ -48,6 +48,9 @@ radioButtons.forEach(radioButton => {
         // Change display of movies based on the category that has been chosen
         const movieCategory = e.target.value;
         switch (movieCategory) {
+            case 'all-movies':
+                addMoviesToDOM(movies);
+                break;
             case 'latest-movies':
                 filterLatestMovies();
                 break;
